@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Q1 2026 Winning Models</title>
+    <style>
+        #login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        #login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        #login-box h2 {
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+        
+        #login-box p {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+        
+        #login-box input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px; /* Prevents iOS zoom on focus */
+            margin-bottom: 15px;
+            -webkit-appearance: none; /* Remove iOS default styling */
+        }
+        
+        #login-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        #login-box button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            -webkit-tap-highlight-color: transparent; /* Remove iOS tap highlight */
+        }
+        
+        #login-box button:hover {
+            transform: translateY(-2px);
+        }
+        
+        #login-box button:active {
+            transform: translateY(0);
+        }
+        
+        .error-message {
+            color: #dc3545;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9em;
+            display: none;
+        }
+        
+        .success-message {
+            color: #28a745;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9em;
+            display: none;
+        }
+        
+        #content {
+            display: none;
+        }
+        
+    </style>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        header h1 { 
+            font-size: 1.5em; 
+            margin-bottom: 5px; 
+            font-weight: 700; 
+        }
+        
+        header p { 
+            font-size: 0.9em; 
+            opacity: 0.9; 
+        }
+        
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .summary-card .label {
+            font-size: 0.75em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        
+        .summary-card .value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #1e3c72;
+        }
+        
+        .filters {
+            padding: 15px;
+            background: white;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filter-group label {
+            font-size: 0.75em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        select, input {
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9em;
+            width: 100%;
+        }
+        
+        .category-section { 
+            padding: 15px; 
+        }
+        
+        .category-header {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .category-header h2 {
+            font-size: 1.3em;
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+        
+        .category-badge {
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        
+        .category-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px;
+            font-size: 0.75em;
+            color: #666;
+        }
+        
+        .category-stats span {
+            background: #f8f9fa;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        table {
+            width: 100%;
+            min-width: 1000px;
+            border-collapse: collapse;
+            background: white;
+            font-size: 0.85em;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        th {
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75em;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #e9ecef;
+            white-space: nowrap;
+        }
+        
+        tbody tr:hover { 
+            background-color: #f8f9fa; 
+        }
+        
+        .model-name { 
+            font-weight: 600; 
+            color: #1e3c72;
+            position: sticky;
+            left: 0;
+            background: white;
+            z-index: 5;
+        }
+        
+        tbody tr:hover .model-name {
+            background-color: #f8f9fa;
+        }
+        
+        .qty-cell { 
+            text-align: right; 
+            font-weight: 600; 
+        }
+        
+        .price-cell { 
+            text-align: right; 
+            color: #28a745; 
+            font-weight: 600; 
+        }
+        
+        .total-cell { 
+            text-align: right; 
+            font-weight: 700; 
+            color: #667eea; 
+        }
+        
+        .hidden { 
+            display: none; 
+        }
+        
+        .scroll-hint {
+            text-align: center;
+            padding: 10px;
+            background: #fff3cd;
+            color: #856404;
+            font-size: 0.85em;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 1400px;
+            }
+            
+            header h1 { 
+                font-size: 2.5em; 
+            }
+            
+            header p { 
+                font-size: 1.2em; 
+            }
+            
+            .summary {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+                padding: 40px;
+            }
+            
+            .summary-card {
+                padding: 25px;
+            }
+            
+            .summary-card .value {
+                font-size: 2.5em;
+            }
+            
+            .filters {
+                padding: 30px 40px;
+                flex-direction: row;
+                gap: 20px;
+            }
+            
+            input {
+                width: 300px;
+            }
+            
+            .category-section {
+                padding: 40px;
+            }
+            
+            .category-header h2 {
+                font-size: 1.8em;
+            }
+            
+            .category-stats {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 10px;
+                font-size: 0.9em;
+            }
+            
+            table {
+                font-size: 1em;
+            }
+            
+            .scroll-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div id="login-box">
+            <h2>🔒 Secure Access</h2>
+            <p>Q1 2026 Winning Models Dashboard</p>
+            <input 
+                type="password" 
+                id="password-input" 
+                placeholder="Enter password" 
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+            >
+            <button onclick="checkPassword()">Access Dashboard</button>
+            <div class="error-message" id="error-message">❌ Incorrect password. Please try again.</div>
+            <div class="success-message" id="success-message">✅ Access granted! Loading...</div>
+        </div>
+    </div>
+    
+    <!-- Main Content (hidden until authenticated) -->
+    <div id="content">
+    <div class="container">
+        <header>
+            <h1>🏆 Q1 2026 Winning Models</h1>
+            <p>Sequoia Refurbished Devices</p>
+        </header>
+        
+        <div class="summary">
+            <div class="summary-card">
+                <div class="label">Total Models</div>
+                <div class="value">66</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">USA QTY</div>
+                <div class="value">179,929</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">EMEIA QTY</div>
+                <div class="value">73,141</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">JAPAC QTY</div>
+                <div class="value">96,367</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">China QTY</div>
+                <div class="value">8,581</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Grand Total</div>
+                <div class="value">358,018</div>
+            </div>
+        </div>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label>Category</label>
+                <select id="category-filter">
+                    <option value="all">All Categories</option>
+                    <option value="AS IS">AS IS</option>
+                    <option value="AS IS MINUS">AS IS MINUS</option>
+                    <option value="AS IS PLUS">AS IS PLUS</option>
+                    <option value="CPO">CPO</option>
+                    <option value="LTSI">LTSI</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Search Model</label>
+                <input type="text" id="search-input" placeholder="Type to search...">
+            </div>
+        </div>
+
+        <div class="category-section" data-category="AS IS">
+            <div class="category-header">
+                <h2>AS IS</h2>
+                <span class="category-badge">15 models</span>
+                <div class="category-stats">
+                    <span>USA: 79,400</span>
+                    <span>EMEIA: 27,994</span>
+                    <span>JAPAC: 16,231</span>
+                    <span>China: 8,581</span>
+                    <span>Total: 132,206</span>
+                </div>
+            </div>
+            
+            <div class="scroll-hint">👉 Swipe left to see prices →</div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="position: sticky; left: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 11;">Model</th>
+                            <th style="text-align: right;">USA</th>
+                            <th style="text-align: right;">EMEIA</th>
+                            <th style="text-align: right;">JAPAC</th>
+                            <th style="text-align: right;">China</th>
+                            <th style="text-align: right;">RoW Total</th>
+                            <th style="text-align: right;">Grand Total</th>
+                            <th style="text-align: right;">$ USA</th>
+                            <th style="text-align: right;">$ EMEIA/JAPAC</th>
+                            <th style="text-align: right;">$ China</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr data-model="IPHONE 11 64GB">
+                            <td class="model-name">IPHONE 11 64GB</td>
+                            <td class="qty-cell">24</td>
+                            <td class="qty-cell">30</td>
+                            <td class="qty-cell">36</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">90</td>
+                            <td class="total-cell">90</td>
+                            <td class="price-cell">$145</td>
+                            <td class="price-cell">$145</td>
+                            <td class="price-cell">$800</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 11 128GB">
+                            <td class="model-name">IPHONE 11 128GB</td>
+                            <td class="qty-cell">24</td>
+                            <td class="qty-cell">40</td>
+                            <td class="qty-cell">36</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">100</td>
+                            <td class="total-cell">100</td>
+                            <td class="price-cell">$167</td>
+                            <td class="price-cell">$167</td>
+                            <td class="price-cell">$1,080</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 11 256GB">
+                            <td class="model-name">IPHONE 11 256GB</td>
+                            <td class="qty-cell">24</td>
+                            <td class="qty-cell">30</td>
+                            <td class="qty-cell">36</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">90</td>
+                            <td class="total-cell">90</td>
+                            <td class="price-cell">$173</td>
+                            <td class="price-cell">$173</td>
+                            <td class="price-cell">$1,180</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 11 PRO 64GB">
+                            <td class="model-name">IPHONE 11 PRO 64GB</td>
+                            <td class="qty-cell">4</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">4</td>
+                            <td class="total-cell">4</td>
+                            <td class="price-cell">$167</td>
+                            <td class="price-cell">$167</td>
+                            <td class="price-cell">$900</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 11 PRO 256GB">
+                            <td class="model-name">IPHONE 11 PRO 256GB</td>
+                            <td class="qty-cell">4</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">4</td>
+                            <td class="total-cell">4</td>
+                            <td class="price-cell">$186</td>
+                            <td class="price-cell">$186</td>
+                            <td class="price-cell">$1,200</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 11 PRO 512GB">
+                            <td class="model-name">IPHONE 11 PRO 512GB</td>
+                            <td class="qty-cell">59</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">20</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">79</td>
+                            <td class="total-cell">79</td>
+                            <td class="price-cell">$192</td>
+                            <td class="price-cell">$192</td>
+                            <td class="price-cell">$1,500</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 15 PRO MAX 256GB">
+                            <td class="model-name">IPHONE 15 PRO MAX 256GB</td>
+                            <td class="qty-cell">7,793</td>
+                            <td class="qty-cell">5,036</td>
+                            <td class="qty-cell">1,533</td>
+                            <td class="qty-cell">40</td>
+                            <td class="qty-cell">14,362</td>
+                            <td class="total-cell">14,402</td>
+                            <td class="price-cell">$585</td>
+                            <td class="price-cell">$590</td>
+                            <td class="price-cell">$4,500</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 15 PRO MAX 512GB">
+                            <td class="model-name">IPHONE 15 PRO MAX 512GB</td>
+                            <td class="qty-cell">2,331</td>
+                            <td class="qty-cell">1,179</td>
+                            <td class="qty-cell">283</td>
+                            <td class="qty-cell">40</td>
+                            <td class="qty-cell">3,793</td>
+                            <td class="total-cell">3,833</td>
+                            <td class="price-cell">$586</td>
+                            <td class="price-cell">$595</td>
+                            <td class="price-cell">$5,000</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 15 PRO MAX 1TB">
+                            <td class="model-name">IPHONE 15 PRO MAX 1TB</td>
+                            <td class="qty-cell">990</td>
+                            <td class="qty-cell">366</td>
+                            <td class="qty-cell">120</td>
+                            <td class="qty-cell">40</td>
+                            <td class="qty-cell">1,476</td>
+                            <td class="total-cell">1,516</td>
+                            <td class="price-cell">$587</td>
+                            <td class="price-cell">$600</td>
+                            <td class="price-cell">$5,400</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 128GB">
+                            <td class="model-name">IPHONE 16 128GB</td>
+                            <td class="qty-cell">14,147</td>
+                            <td class="qty-cell">5,924</td>
+                            <td class="qty-cell">3,528</td>
+                            <td class="qty-cell">5,112</td>
+                            <td class="qty-cell">23,599</td>
+                            <td class="total-cell">28,711</td>
+                            <td class="price-cell">$487</td>
+                            <td class="price-cell">$526</td>
+                            <td class="price-cell">$3,300</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 256GB">
+                            <td class="model-name">IPHONE 16 256GB</td>
+                            <td class="qty-cell">2,812</td>
+                            <td class="qty-cell">858</td>
+                            <td class="qty-cell">1,661</td>
+                            <td class="qty-cell">1,243</td>
+                            <td class="qty-cell">5,331</td>
+                            <td class="total-cell">6,574</td>
+                            <td class="price-cell">$513</td>
+                            <td class="price-cell">$551</td>
+                            <td class="price-cell">$3,600</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 512GB">
+                            <td class="model-name">IPHONE 16 512GB</td>
+                            <td class="qty-cell">681</td>
+                            <td class="qty-cell">208</td>
+                            <td class="qty-cell">353</td>
+                            <td class="qty-cell">240</td>
+                            <td class="qty-cell">1,242</td>
+                            <td class="total-cell">1,482</td>
+                            <td class="price-cell">$538</td>
+                            <td class="price-cell">$577</td>
+                            <td class="price-cell">$4,000</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 256GB">
+                            <td class="model-name">IPHONE 16 PRO MAX 256GB</td>
+                            <td class="qty-cell">32,552</td>
+                            <td class="qty-cell">11,351</td>
+                            <td class="qty-cell">6,848</td>
+                            <td class="qty-cell">1,230</td>
+                            <td class="qty-cell">50,751</td>
+                            <td class="total-cell">51,981</td>
+                            <td class="price-cell">$724</td>
+                            <td class="price-cell">$795</td>
+                            <td class="price-cell">$5,500</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 512GB">
+                            <td class="model-name">IPHONE 16 PRO MAX 512GB</td>
+                            <td class="qty-cell">11,878</td>
+                            <td class="qty-cell">2,086</td>
+                            <td class="qty-cell">1,231</td>
+                            <td class="qty-cell">531</td>
+                            <td class="qty-cell">15,195</td>
+                            <td class="total-cell">15,726</td>
+                            <td class="price-cell">$763</td>
+                            <td class="price-cell">$833</td>
+                            <td class="price-cell">$6,000</td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 1TB">
+                            <td class="model-name">IPHONE 16 PRO MAX 1TB</td>
+                            <td class="qty-cell">6,077</td>
+                            <td class="qty-cell">886</td>
+                            <td class="qty-cell">546</td>
+                            <td class="qty-cell">105</td>
+                            <td class="qty-cell">7,509</td>
+                            <td class="total-cell">7,614</td>
+                            <td class="price-cell">$788</td>
+                            <td class="price-cell">$859</td>
+                            <td class="price-cell">$6,500</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="category-section" data-category="AS IS MINUS">
+            <div class="category-header">
+                <h2>AS IS MINUS</h2>
+                <span class="category-badge">15 models</span>
+                <div class="category-stats">
+                    <span>USA: 25,616</span>
+                    <span>EMEIA: 0</span>
+                    <span>JAPAC: 0</span>
+                    <span>China: 0</span>
+                    <span>Total: 25,616</span>
+                </div>
+            </div>
+            
+            <div class="scroll-hint">👉 Swipe left to see prices →</div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="position: sticky; left: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 11;">Model</th>
+                            <th style="text-align: right;">USA</th>
+                            <th style="text-align: right;">EMEIA</th>
+                            <th style="text-align: right;">JAPAC</th>
+                            <th style="text-align: right;">China</th>
+                            <th style="text-align: right;">RoW Total</th>
+                            <th style="text-align: right;">Grand Total</th>
+                            <th style="text-align: right;">$ USA</th>
+                            <th style="text-align: right;">$ EMEIA/JAPAC</th>
+                            <th style="text-align: right;">$ China</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr data-model="IPHONE 11 64GB">
+                            <td class="model-name">IPHONE 11 64GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 11 128GB">
+                            <td class="model-name">IPHONE 11 128GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 11 256GB">
+                            <td class="model-name">IPHONE 11 256GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 11 PRO 64GB">
+                            <td class="model-name">IPHONE 11 PRO 64GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 11 PRO 256GB">
+                            <td class="model-name">IPHONE 11 PRO 256GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 11 PRO 512GB">
+                            <td class="model-name">IPHONE 11 PRO 512GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 15 PRO MAX 256GB">
+                            <td class="model-name">IPHONE 15 PRO MAX 256GB</td>
+                            <td class="qty-cell">1,953</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">1,953</td>
+                            <td class="total-cell">1,953</td>
+                            <td class="price-cell">$449</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 15 PRO MAX 512GB">
+                            <td class="model-name">IPHONE 15 PRO MAX 512GB</td>
+                            <td class="qty-cell">489</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">489</td>
+                            <td class="total-cell">489</td>
+                            <td class="price-cell">$462</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 15 PRO MAX 1TB">
+                            <td class="model-name">IPHONE 15 PRO MAX 1TB</td>
+                            <td class="qty-cell">195</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">195</td>
+                            <td class="total-cell">195</td>
+                            <td class="price-cell">$474</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 128GB">
+                            <td class="model-name">IPHONE 16 128GB</td>
+                            <td class="qty-cell">4,338</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">4,338</td>
+                            <td class="total-cell">4,338</td>
+                            <td class="price-cell">$410</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 256GB">
+                            <td class="model-name">IPHONE 16 256GB</td>
+                            <td class="qty-cell">521</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">521</td>
+                            <td class="total-cell">521</td>
+                            <td class="price-cell">$436</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 512GB">
+                            <td class="model-name">IPHONE 16 512GB</td>
+                            <td class="qty-cell">54</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">54</td>
+                            <td class="total-cell">54</td>
+                            <td class="price-cell">$462</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 256GB">
+                            <td class="model-name">IPHONE 16 PRO MAX 256GB</td>
+                            <td class="qty-cell">11,847</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">11,847</td>
+                            <td class="total-cell">11,847</td>
+                            <td class="price-cell">$628</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 512GB">
+                            <td class="model-name">IPHONE 16 PRO MAX 512GB</td>
+                            <td class="qty-cell">4,311</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">4,311</td>
+                            <td class="total-cell">4,311</td>
+                            <td class="price-cell">$679</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 1TB">
+                            <td class="model-name">IPHONE 16 PRO MAX 1TB</td>
+                            <td class="qty-cell">1,908</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">1,908</td>
+                            <td class="total-cell">1,908</td>
+                            <td class="price-cell">$718</td>
+                            <td class="price-cell"></td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="category-section" data-category="AS IS PLUS">
+            <div class="category-header">
+                <h2>AS IS PLUS</h2>
+                <span class="category-badge">9 models</span>
+                <div class="category-stats">
+                    <span>USA: 36,025</span>
+                    <span>EMEIA: 25,611</span>
+                    <span>JAPAC: 58,430</span>
+                    <span>China: 0</span>
+                    <span>Total: 120,066</span>
+                </div>
+            </div>
+            
+            <div class="scroll-hint">👉 Swipe left to see prices →</div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="position: sticky; left: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 11;">Model</th>
+                            <th style="text-align: right;">USA</th>
+                            <th style="text-align: right;">EMEIA</th>
+                            <th style="text-align: right;">JAPAC</th>
+                            <th style="text-align: right;">China</th>
+                            <th style="text-align: right;">RoW Total</th>
+                            <th style="text-align: right;">Grand Total</th>
+                            <th style="text-align: right;">$ USA</th>
+                            <th style="text-align: right;">$ EMEIA/JAPAC</th>
+                            <th style="text-align: right;">$ China</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr data-model="IPHONE 15 PRO MAX 256GB">
+                            <td class="model-name">IPHONE 15 PRO MAX 256GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">20</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">20</td>
+                            <td class="total-cell">20</td>
+                            <td class="price-cell">$590</td>
+                            <td class="price-cell">$615</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 15 PRO MAX 512GB">
+                            <td class="model-name">IPHONE 15 PRO MAX 512GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">20</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">20</td>
+                            <td class="total-cell">20</td>
+                            <td class="price-cell">$615</td>
+                            <td class="price-cell">$641</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 15 PRO MAX 1TB">
+                            <td class="model-name">IPHONE 15 PRO MAX 1TB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell">$641</td>
+                            <td class="price-cell">$667</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 128GB">
+                            <td class="model-name">IPHONE 16 128GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell">$490</td>
+                            <td class="price-cell">$528</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 256GB">
+                            <td class="model-name">IPHONE 16 256GB</td>
+                            <td class="qty-cell">2,980</td>
+                            <td class="qty-cell">2,940</td>
+                            <td class="qty-cell">6,867</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">12,787</td>
+                            <td class="total-cell">12,787</td>
+                            <td class="price-cell">$538</td>
+                            <td class="price-cell">$564</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 512GB">
+                            <td class="model-name">IPHONE 16 512GB</td>
+                            <td class="qty-cell">2,973</td>
+                            <td class="qty-cell">2,782</td>
+                            <td class="qty-cell">6,844</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">12,599</td>
+                            <td class="total-cell">12,599</td>
+                            <td class="price-cell">$564</td>
+                            <td class="price-cell">$590</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 256GB">
+                            <td class="model-name">IPHONE 16 PRO MAX 256GB</td>
+                            <td class="qty-cell">15,118</td>
+                            <td class="qty-cell">9,945</td>
+                            <td class="qty-cell">22,405</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">47,468</td>
+                            <td class="total-cell">47,468</td>
+                            <td class="price-cell">$821</td>
+                            <td class="price-cell">$897</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 512GB">
+                            <td class="model-name">IPHONE 16 PRO MAX 512GB</td>
+                            <td class="qty-cell">14,954</td>
+                            <td class="qty-cell">9,904</td>
+                            <td class="qty-cell">22,314</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">47,172</td>
+                            <td class="total-cell">47,172</td>
+                            <td class="price-cell">$923</td>
+                            <td class="price-cell">$1,013</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 1TB">
+                            <td class="model-name">IPHONE 16 PRO MAX 1TB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell">$936</td>
+                            <td class="price-cell">$1,026</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="category-section" data-category="CPO">
+            <div class="category-header">
+                <h2>CPO</h2>
+                <span class="category-badge">21 models</span>
+                <div class="category-stats">
+                    <span>USA: 32,523</span>
+                    <span>EMEIA: 19,440</span>
+                    <span>JAPAC: 21,682</span>
+                    <span>China: 0</span>
+                    <span>Total: 73,645</span>
+                </div>
+            </div>
+            
+            <div class="scroll-hint">👉 Swipe left to see prices →</div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="position: sticky; left: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 11;">Model</th>
+                            <th style="text-align: right;">USA</th>
+                            <th style="text-align: right;">EMEIA</th>
+                            <th style="text-align: right;">JAPAC</th>
+                            <th style="text-align: right;">China</th>
+                            <th style="text-align: right;">RoW Total</th>
+                            <th style="text-align: right;">Grand Total</th>
+                            <th style="text-align: right;">$ USA</th>
+                            <th style="text-align: right;">$ EMEIA/JAPAC</th>
+                            <th style="text-align: right;">$ China</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr data-model="IPHONE 12 MINI 64GB">
+                            <td class="model-name">IPHONE 12 MINI 64GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell">$128</td>
+                            <td class="price-cell">$128</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 12 MINI 128GB">
+                            <td class="model-name">IPHONE 12 MINI 128GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell">$154</td>
+                            <td class="price-cell">$154</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 12 MINI 256GB">
+                            <td class="model-name">IPHONE 12 MINI 256GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell">$179</td>
+                            <td class="price-cell">$179</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 12 PRO MAX 128GB">
+                            <td class="model-name">IPHONE 12 PRO MAX 128GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell">$372</td>
+                            <td class="price-cell">$372</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 12 PRO MAX 256GB">
+                            <td class="model-name">IPHONE 12 PRO MAX 256GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="total-cell">0</td>
+                            <td class="price-cell">$397</td>
+                            <td class="price-cell">$397</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 12 PRO MAX 512GB">
+                            <td class="model-name">IPHONE 12 PRO MAX 512GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">20</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">20</td>
+                            <td class="total-cell">20</td>
+                            <td class="price-cell">$410</td>
+                            <td class="price-cell">$410</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 13 PRO 128GB">
+                            <td class="model-name">IPHONE 13 PRO 128GB</td>
+                            <td class="qty-cell">8,689</td>
+                            <td class="qty-cell">5,934</td>
+                            <td class="qty-cell">5,617</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">20,240</td>
+                            <td class="total-cell">20,240</td>
+                            <td class="price-cell">$388</td>
+                            <td class="price-cell">$388</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 13 PRO 256GB">
+                            <td class="model-name">IPHONE 13 PRO 256GB</td>
+                            <td class="qty-cell">3,310</td>
+                            <td class="qty-cell">2,269</td>
+                            <td class="qty-cell">3,696</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">9,275</td>
+                            <td class="total-cell">9,275</td>
+                            <td class="price-cell">$415</td>
+                            <td class="price-cell">$415</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 13 PRO 512GB">
+                            <td class="model-name">IPHONE 13 PRO 512GB</td>
+                            <td class="qty-cell">350</td>
+                            <td class="qty-cell">599</td>
+                            <td class="qty-cell">270</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">1,219</td>
+                            <td class="total-cell">1,219</td>
+                            <td class="price-cell">$425</td>
+                            <td class="price-cell">$425</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 13 PRO 1TB">
+                            <td class="model-name">IPHONE 13 PRO 1TB</td>
+                            <td class="qty-cell">150</td>
+                            <td class="qty-cell">160</td>
+                            <td class="qty-cell">188</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">498</td>
+                            <td class="total-cell">498</td>
+                            <td class="price-cell">$440</td>
+                            <td class="price-cell">$440</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 13 PRO MAX 128GB">
+                            <td class="model-name">IPHONE 13 PRO MAX 128GB</td>
+                            <td class="qty-cell">942</td>
+                            <td class="qty-cell">305</td>
+                            <td class="qty-cell">410</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">1,657</td>
+                            <td class="total-cell">1,657</td>
+                            <td class="price-cell">$460</td>
+                            <td class="price-cell">$460</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 13 PRO MAX 256GB">
+                            <td class="model-name">IPHONE 13 PRO MAX 256GB</td>
+                            <td class="qty-cell">645</td>
+                            <td class="qty-cell">469</td>
+                            <td class="qty-cell">459</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">1,573</td>
+                            <td class="total-cell">1,573</td>
+                            <td class="price-cell">$500</td>
+                            <td class="price-cell">$500</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 13 PRO MAX 512GB">
+                            <td class="model-name">IPHONE 13 PRO MAX 512GB</td>
+                            <td class="qty-cell">190</td>
+                            <td class="qty-cell">194</td>
+                            <td class="qty-cell">52</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">436</td>
+                            <td class="total-cell">436</td>
+                            <td class="price-cell">$513</td>
+                            <td class="price-cell">$513</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 13 PRO MAX 1TB">
+                            <td class="model-name">IPHONE 13 PRO MAX 1TB</td>
+                            <td class="qty-cell">94</td>
+                            <td class="qty-cell">90</td>
+                            <td class="qty-cell">63</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">247</td>
+                            <td class="total-cell">247</td>
+                            <td class="price-cell">$526</td>
+                            <td class="price-cell">$526</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 14 PRO MAX 128GB">
+                            <td class="model-name">IPHONE 14 PRO MAX 128GB</td>
+                            <td class="qty-cell">7,731</td>
+                            <td class="qty-cell">3,777</td>
+                            <td class="qty-cell">362</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">11,870</td>
+                            <td class="total-cell">11,870</td>
+                            <td class="price-cell">$530</td>
+                            <td class="price-cell">$577</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 14 PRO MAX 256GB">
+                            <td class="model-name">IPHONE 14 PRO MAX 256GB</td>
+                            <td class="qty-cell">6,856</td>
+                            <td class="qty-cell">3,681</td>
+                            <td class="qty-cell">517</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">11,054</td>
+                            <td class="total-cell">11,054</td>
+                            <td class="price-cell">$550</td>
+                            <td class="price-cell">$603</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 14 PRO MAX 512GB">
+                            <td class="model-name">IPHONE 14 PRO MAX 512GB</td>
+                            <td class="qty-cell">2,493</td>
+                            <td class="qty-cell">1,399</td>
+                            <td class="qty-cell">401</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">4,293</td>
+                            <td class="total-cell">4,293</td>
+                            <td class="price-cell">$571</td>
+                            <td class="price-cell">$628</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 14 PRO MAX 1TB">
+                            <td class="model-name">IPHONE 14 PRO MAX 1TB</td>
+                            <td class="qty-cell">1,073</td>
+                            <td class="qty-cell">543</td>
+                            <td class="qty-cell">357</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">1,973</td>
+                            <td class="total-cell">1,973</td>
+                            <td class="price-cell">$583</td>
+                            <td class="price-cell">$641</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 256GB">
+                            <td class="model-name">IPHONE 16 PRO MAX 256GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">6,432</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">6,432</td>
+                            <td class="total-cell">6,432</td>
+                            <td class="price-cell">$846</td>
+                            <td class="price-cell">$923</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 512GB">
+                            <td class="model-name">IPHONE 16 PRO MAX 512GB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">2,224</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">2,224</td>
+                            <td class="total-cell">2,224</td>
+                            <td class="price-cell">$872</td>
+                            <td class="price-cell">$1,000</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 1TB">
+                            <td class="model-name">IPHONE 16 PRO MAX 1TB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">634</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">634</td>
+                            <td class="total-cell">634</td>
+                            <td class="price-cell">$923</td>
+                            <td class="price-cell">$1,051</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="category-section" data-category="LTSI">
+            <div class="category-header">
+                <h2>LTSI</h2>
+                <span class="category-badge">6 models</span>
+                <div class="category-stats">
+                    <span>USA: 6,365</span>
+                    <span>EMEIA: 96</span>
+                    <span>JAPAC: 24</span>
+                    <span>China: 0</span>
+                    <span>Total: 6,485</span>
+                </div>
+            </div>
+            
+            <div class="scroll-hint">👉 Swipe left to see prices →</div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="position: sticky; left: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 11;">Model</th>
+                            <th style="text-align: right;">USA</th>
+                            <th style="text-align: right;">EMEIA</th>
+                            <th style="text-align: right;">JAPAC</th>
+                            <th style="text-align: right;">China</th>
+                            <th style="text-align: right;">RoW Total</th>
+                            <th style="text-align: right;">Grand Total</th>
+                            <th style="text-align: right;">$ USA</th>
+                            <th style="text-align: right;">$ EMEIA/JAPAC</th>
+                            <th style="text-align: right;">$ China</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr data-model="IPHONE 15 Plus 128GB">
+                            <td class="model-name">IPHONE 15 Plus 128GB</td>
+                            <td class="qty-cell">1,278</td>
+                            <td class="qty-cell">75</td>
+                            <td class="qty-cell">14</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">1,367</td>
+                            <td class="total-cell">1,367</td>
+                            <td class="price-cell">$474</td>
+                            <td class="price-cell">$526</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 15 Plus 256GB">
+                            <td class="model-name">IPHONE 15 Plus 256GB</td>
+                            <td class="qty-cell">163</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">10</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">173</td>
+                            <td class="total-cell">173</td>
+                            <td class="price-cell">$500</td>
+                            <td class="price-cell">$551</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 15 Plus 512GB">
+                            <td class="model-name">IPHONE 15 Plus 512GB</td>
+                            <td class="qty-cell">635</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">635</td>
+                            <td class="total-cell">635</td>
+                            <td class="price-cell">$526</td>
+                            <td class="price-cell">$577</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 256GB">
+                            <td class="model-name">IPHONE 16 PRO MAX 256GB</td>
+                            <td class="qty-cell">3,181</td>
+                            <td class="qty-cell">6</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">3,187</td>
+                            <td class="total-cell">3,187</td>
+                            <td class="price-cell">$941</td>
+                            <td class="price-cell">$1,000</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 512GB">
+                            <td class="model-name">IPHONE 16 PRO MAX 512GB</td>
+                            <td class="qty-cell">1,108</td>
+                            <td class="qty-cell">12</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">1,120</td>
+                            <td class="total-cell">1,120</td>
+                            <td class="price-cell">$1,000</td>
+                            <td class="price-cell">$1,026</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                        <tr data-model="IPHONE 16 PRO MAX 1TB">
+                            <td class="model-name">IPHONE 16 PRO MAX 1TB</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">3</td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell"></td>
+                            <td class="qty-cell">3</td>
+                            <td class="total-cell">3</td>
+                            <td class="price-cell">$1,026</td>
+                            <td class="price-cell">$1,090</td>
+                            <td class="price-cell"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    </div> <!-- End of content wrapper -->
+    
+    <script>
+        // Password protection - Case-sensitive, exact match
+        const CORRECT_PASSWORD = "Cortex2004";
+        
+        function checkPassword() {
+            const input = document.getElementById('password-input');
+            const errorMsg = document.getElementById('error-message');
+            const successMsg = document.getElementById('success-message');
+            
+            // Trim whitespace and get exact value
+            const enteredPassword = input.value.trim();
+            
+            console.log('Checking password...'); // Debug log
+            
+            if (enteredPassword === CORRECT_PASSWORD) {
+                // Show success message
+                errorMsg.style.display = 'none';
+                successMsg.style.display = 'block';
+                
+                // Hide login screen after short delay, show content
+                setTimeout(function() {
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                    
+                    // Store authentication in session
+                    sessionStorage.setItem('authenticated', 'true');
+                }, 500);
+            } else {
+                // Show error
+                successMsg.style.display = 'none';
+                errorMsg.style.display = 'block';
+                input.value = '';
+                input.focus();
+                
+                console.log('Incorrect password entered'); // Debug log
+            }
+        }
+        
+        // Allow Enter key to submit
+        document.getElementById('password-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                checkPassword();
+            }
+        });
+        
+        // Auto-focus on password field when page loads
+        window.addEventListener('load', function() {
+            // Check if already authenticated in this session
+            if (sessionStorage.getItem('authenticated') === 'true') {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            } else {
+                // Focus on password input
+                setTimeout(function() {
+                    document.getElementById('password-input').focus();
+                }, 100);
+            }
+        });
+        
+        // Category filter
+        document.getElementById('category-filter').addEventListener('change', function(e) {
+            const selectedCategory = e.target.value;
+            const sections = document.querySelectorAll('.category-section');
+            
+            sections.forEach(section => {
+                if (selectedCategory === 'all' || section.dataset.category === selectedCategory) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        });
+        
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const modelName = row.dataset.model.toLowerCase();
+                if (modelName.includes(searchTerm)) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
